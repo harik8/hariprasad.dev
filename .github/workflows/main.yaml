@@ -24,3 +24,5 @@ jobs:
     with:
       commands: |
         aws s3 cp ./src s3://$BUCKET_NAME/static --recursive
+    env:
+      BUCKET_NAME: ${{ secrets.AWS_S3_HP_DOT_DEV_S3_BUCKET }}
