@@ -34,4 +34,11 @@ jobs:
 
     - name: AWS - S3 sync
       run: |
-        aws s3 sync ./src s3://${{ secrets.AWS_S3_HP_DOT_DEV_S3_BUCKET }}/static --delete
+        set +e
+        OUTPUT=$(aws s3 sync ./src s3://${{ secrets.AWS_S3_HP_DOT_DEV_S3_BUCKET }}/static --delete 2>&1)
+        EXIT_CODE=$?
+        if [ $EXIT_CODE -ne 0 ]; then
+          echo "S3 upload failed"
+          echo "$OUTPUT" | sed 's/arn:aws:iam::[0-9]*:/arn:aws:iam::***:/g'
+        fi
+        exit $EXIT_CODE
