@@ -25,4 +25,8 @@ jobs:
     steps:
     - name: PUBLISH - Use AWS Credentials from STS Job
       run: |  
-         aws sts get-caller-identity
+        echo "::add-mask::AWS_ACCESS_KEY_ID=${{ needs.STS.outputs.aws_access_key_id }}" >> $GITHUB_ENV
+        echo "::add-mask::AWS_SECRET_ACCESS_KEY=${{ needs.STS.outputs.aws_secret_access_key }}" >> $GITHUB_ENV
+        echo "::add-mask::AWS_SESSION_TOKEN=${{ needs.STS.outputs.aws_session_token }}" >> $GITHUB_ENV
+
+        aws sts get-caller-identity
