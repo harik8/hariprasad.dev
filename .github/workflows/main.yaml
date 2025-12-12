@@ -1,27 +1,34 @@
 name: AWS
 
-on:
-  push:
-    branches:
-    - main
-  pull_request:
-    branches:
-    - main
-
-env:
-  BUCKET_NAME: ${{ secrets.AWS_S3_HP_DOT_DEV_S3_BUCKET }}
-
-permissions:
-  id-token: write # This is required for requesting the JWT
-  contents: read  # This is required for actions/checkout
+on: push
 
 jobs:
-  S3:
-    uses: harik8/sandbox/.github/workflows/rw-aws.yaml@D-121225
-    # secrets:
-    #   AWS_IAM_GITHUB_OIDC_ROLE_ARN: ${{ secrets.AWS_IAM_GITHUB_OIDC_ROLE_ARN }}
-    #   AWS_IAM_ASSUME_ROLE_ARN: ${{ secrets.AWS_IAM_ASSUME_ROLE_ARN }}
-    with:
-      commands: |
-        aws s3 ls s3://${{ vars.BUCKET_NAME }}/
-    secrets: inherit
+  AWS:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 2
+
+    - name: AWS - Set AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v5.1.1
+      with:
+        aws-region: ${{ vars.AWS_REGION }}
+        role-to-assume: ${{ secrets.AWS_IAM_GITHUB_OIDC_ROLE_ARN }}
+        role-session-name: gh_set_aws_credentials
+
+    - name: AWS - Assume Role
+      id: aws_assume_role
+      uses: aws-actions/configure-aws-credentials@v5.1.1
+      with:
+        aws-region: ${{ vars.AWS_REGION }}
+        role-to-assume: ${{ secrets.AWS_IAM_ASSUME_ROLE_ARN }}
+        role-session-name: gh_assume_role
+        role-chaining: true
+
+    - name: AWS - S3 sync
+      run: |
+        aws s3 sync ./src s3://${{ secrets.AWS_S3_HP_DOT_DEV_S3_BUCKET }}/static --recursive
+        
