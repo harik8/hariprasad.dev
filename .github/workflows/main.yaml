@@ -13,22 +13,12 @@ permissions:
   contents: read  # This is required for actions/checkout
 
 jobs:
-  STS:
+  S3:
     uses: harik8/sandbox/.github/workflows/rw-aws.yaml@D-121225
     secrets:
       AWS_IAM_GITHUB_OIDC_ROLE_ARN: ${{ secrets.AWS_IAM_GITHUB_OIDC_ROLE_ARN }}
       AWS_IAM_ASSUME_ROLE_ARN: ${{ secrets.AWS_IAM_ASSUME_ROLE_ARN }}
-
-  PUBLISH:
-    needs: STS
-    runs-on: ubuntu-latest
-    steps:
-    - name: PUBLISH - Use AWS Credentials from STS Job
-      run: |  
-        echo "AWS_ACCESS_KEY_ID=${{ needs.STS.outputs.aws_access_key_id }}" >> $GITHUB_ENV
-        echo "AWS_SECRET_ACCESS_KEY=${{ needs.STS.outputs.aws_secret_access_key }}" >> $GITHUB_ENV
-        echo "AWS_SESSION_TOKEN=${{ needs.STS.outputs.aws_session_token }}" >> $GITHUB_ENV
-
+    with:
+      commands: |
         aws sts get-caller-identity
 
-        
