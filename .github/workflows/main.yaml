@@ -21,5 +21,7 @@ jobs:
 
   PUBLISH:
     needs: STS
-    run: |
-      env
+    steps:
+    - name: PUBLISH - Use AWS Credentials from STS Job
+      run: |  
+        env
