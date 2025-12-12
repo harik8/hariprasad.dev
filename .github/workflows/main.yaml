@@ -25,4 +25,4 @@ jobs:
     steps:
     - name: PUBLISH - Use AWS Credentials from STS Job
       run: |  
-        env
+         aws sts get-caller-identity
