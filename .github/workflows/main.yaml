@@ -21,6 +21,7 @@ jobs:
 
   PUBLISH:
     needs: STS
+    runs-on: ubuntu-latest
     steps:
     - name: PUBLISH - Use AWS Credentials from STS Job
       run: |  
