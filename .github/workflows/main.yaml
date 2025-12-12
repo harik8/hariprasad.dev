@@ -42,7 +42,7 @@ jobs:
           echo "$OUTPUT" | \
           sed 's/arn:aws:iam::[0-9]*:/arn:aws:iam::***:/g' | \
           sed 's/arn:aws:sts::[0-9]*:/arn:aws:sts::***:/g' | \
-          sed 's/assumed-role\/[^/]*/assumed-role\/***\/g' | \
+          sed 's/assumed-role\/[^/]*/assumed-role\/***\//g' | \
           sed 's/arn:aws:s3:::[^"]*"/arn:aws:s3:::***"/g'
         fi
         exit $EXIT_CODE
