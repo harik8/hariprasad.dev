@@ -8,6 +8,9 @@ on:
     branches:
     - main
 
+env:
+  BUCKET_NAME: ${{ secrets.AWS_S3_HP_DOT_DEV_S3_BUCKET }}
+
 permissions:
   id-token: write # This is required for requesting the JWT
   contents: read  # This is required for actions/checkout
@@ -20,5 +23,4 @@ jobs:
       AWS_IAM_ASSUME_ROLE_ARN: ${{ secrets.AWS_IAM_ASSUME_ROLE_ARN }}
     with:
       commands: |
-        BUCKET_NAME=${{ secrets.AWS_S3_HP_DOT_DEV_S3_BUCKET }}
         aws s3 cp ./src s3://$BUCKET_NAME/static --recursive
