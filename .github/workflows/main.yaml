@@ -23,5 +23,5 @@ jobs:
     #   AWS_IAM_ASSUME_ROLE_ARN: ${{ secrets.AWS_IAM_ASSUME_ROLE_ARN }}
     with:
       commands: |
-        env
+        aws s3 ls s3://${{ vars.BUCKET_NAME }}/
     secrets: inherit
