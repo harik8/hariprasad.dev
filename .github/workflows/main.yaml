@@ -15,9 +15,9 @@ permissions:
 jobs:
   S3:
     uses: harik8/sandbox/.github/workflows/rw-aws.yaml@D-121225
-    secrets:
-      AWS_IAM_GITHUB_OIDC_ROLE_ARN: ${{ secrets.AWS_IAM_GITHUB_OIDC_ROLE_ARN }}
-      AWS_IAM_ASSUME_ROLE_ARN: ${{ secrets.AWS_IAM_ASSUME_ROLE_ARN }}
+    # secrets:
+    #   AWS_IAM_GITHUB_OIDC_ROLE_ARN: ${{ secrets.AWS_IAM_GITHUB_OIDC_ROLE_ARN }}
+    #   AWS_IAM_ASSUME_ROLE_ARN: ${{ secrets.AWS_IAM_ASSUME_ROLE_ARN }}
     with:
       commands: |
         aws s3 cp ./src s3://$BUCKET_NAME/static --recursive
