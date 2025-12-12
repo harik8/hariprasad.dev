@@ -39,6 +39,6 @@ jobs:
         EXIT_CODE=$?
         if [ $EXIT_CODE -ne 0 ]; then
           echo "S3 upload failed"
-          echo "$OUTPUT" | sed 's/arn:aws:iam::[0-9]*:/arn:aws:iam::***:/arn:aws:sts::[0-9]*:/arn:aws:sts::***:/g'
+          echo "$OUTPUT" | sed 's/arn:aws:iam::[0-9]*:/arn:aws:iam::***:/g; s/arn:aws:sts::[0-9]*:/arn:aws:sts::***:/g'
         fi
         exit $EXIT_CODE
