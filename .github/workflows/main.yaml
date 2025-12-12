@@ -1,4 +1,4 @@
-name: AWS
+name: PUBLISH
 
 on: push
 
@@ -35,7 +35,7 @@ jobs:
     - name: AWS - S3 sync
       run: |
         set +e
-        OUTPUT=$(aws s3 sync ./src s3://dskfjh/static --delete 2>&1)
+        OUTPUT=$(aws s3 sync ./src s3://none-tofu-state/static --delete 2>&1)
         EXIT_CODE=$?
         if [ $EXIT_CODE -ne 0 ]; then
           echo "S3 upload failed"
