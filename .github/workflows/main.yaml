@@ -23,6 +23,5 @@ jobs:
     #   AWS_IAM_ASSUME_ROLE_ARN: ${{ secrets.AWS_IAM_ASSUME_ROLE_ARN }}
     with:
       commands: |
-    #    aws s3 cp ./src s3://${{ secrets.AWS_S3_HP_DOT_DEV_S3_BUCKET }}/static --recursive
         env
     secrets: inherit
