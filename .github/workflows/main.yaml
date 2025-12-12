@@ -7,7 +7,7 @@ permissions:
   contents: read  # This is required for actions/checkout
 
 jobs:
-  AWS:
+  S3_SYNC:
     runs-on: ubuntu-latest
 
     steps:
@@ -39,6 +39,10 @@ jobs:
         EXIT_CODE=$?
         if [ $EXIT_CODE -ne 0 ]; then
           echo "S3 upload failed"
-          echo "$OUTPUT" | sed 's/arn:aws:iam::[0-9]*:/arn:aws:iam::***:/g; s/arn:aws:sts::[0-9]*:/arn:aws:sts::***:/g'
+          echo "$OUTPUT" | \
+          sed 's/arn:aws:iam::[0-9]*:/arn:aws:iam::***:/g' | \
+          sed 's/arn:aws:sts::[0-9]*:/arn:aws:sts::***:/g' | \
+          sed 's/assumed-role\/[^/]*/assumed-role\/***\/g' | \
+          sed 's/arn:aws:s3:::[^"]*"/arn:aws:s3:::***"/g'
         fi
         exit $EXIT_CODE
