@@ -30,3 +30,4 @@ jobs:
         echo "AWS_SESSION_TOKEN=${{ needs.STS.outputs.aws_session_token }}" >> $GITHUB_ENV
 
         aws sts get-caller-identity
+        
