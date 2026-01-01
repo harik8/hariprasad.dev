@@ -5,7 +5,7 @@
 <p align="center">
   <a href="https://github.com/harik8/hariprasad.dev">
     <img src="https://github.com/harik8/hariprasad.dev/actions/workflows/main.yaml/badge.svg?branch=main"/>
-    <img src="https://img.shields.io/website?url=https%3A//www.hariprasad.dev?up_message=up?logo=upptime"/>
+    <img src="https://img.shields.io/website?url=https%3A//www.hariprasad1123.dev?up_message=up?down_message=down?down_color=red"/>
   </a>
 </p>
 
