@@ -7,7 +7,7 @@ permissions:
   contents: read  # This is required for actions/checkout
 
 jobs:
-  S3_SYNC:
+  RELEASE:
     runs-on: ubuntu-latest
 
     steps:
@@ -29,14 +29,14 @@ jobs:
       with:
         aws-region: ${{ vars.AWS_REGION }}
         role-to-assume: ${{ secrets.AWS_IAM_ASSUME_ROLE_ARN }}
-        role-session-name: gh_assume_role
+        role-session-name: github_action
         role-chaining: true
 
-    - name: AWS - S3 sync
+    - name: Publish
       run: |
         # Mask sensitive info from logs
         set +e
-        OUTPUT=$(aws s3 sync ./src s3://${{ vars.AWS_S3_HARIPRASAD_DEV }}/static --delete 2>&1)
+        OUTPUT=$(aws s3 sync ./src s3://${{ secrets.AWS_S3_BUCKET_NAME }}/static --delete 2>&1)
         EXIT_CODE=$?
         if [ $EXIT_CODE -ne 0 ]; then
           echo "S3 upload failed"
