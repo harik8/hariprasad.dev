@@ -1,0 +1,58 @@
+---
+cloudfront:
+  - name: portfolio-website
+    aliases: 
+      - hariprasad.dev
+      - www.hariprasad.dev
+      - abc.hariprasad.dev 
+    create_oac: true
+    create_oai: false
+    logging_config:
+      bucket: ${workspace}-portfolio-website.s3.amazonaws.com
+    origin:
+      s3_portfolio_website:
+        domain_name: "${workspace}-portfolio-website.s3.amazonaws.com"
+        origin_access_control: "s3"
+    default_root_object: "static/index.html"
+    default_cache_behavior:
+      target_origin_id: "s3_portfolio_website"
+      viewer_protocol_policy: "redirect-to-https"
+      allowed_methods: ["GET", "HEAD", "OPTIONS"]
+      cached_methods: ["GET", "HEAD"]
+      compress: true
+      query_string: true
+    ordered_cache_behavior:
+      - path_pattern: "/static/*"
+        target_origin_id: "s3_portfolio_website"
+        viewer_protocol_policy: "redirect-to-https"
+        allowed_methods: ["GET", "HEAD", "OPTIONS"]
+        cached_methods: ["GET", "HEAD"]
+        compress: true
+        query_string: true
+    viewer_certificate:
+      acm_certificate_arn: "arn:aws:acm:us-east-1:${account_id}:certificate/2cb55fa7-d525-41db-aab8-fa2342109c07"
+      minimum_protocol_version: "TLSv1.2_2021"
+      ssl_support_method: "sni-only"
+s3:
+  - name: portfolio-website
+    policy: |
+      {
+        "Version": "2012-10-17",
+        "Id": "AllowCloudFront",
+        "Statement": [
+            {
+                "Sid": "AllowCloudFrontPrincipal",
+                "Effect": "Allow",
+                "Principal": {
+                    "Service": "cloudfront.amazonaws.com"
+                },
+                "Action": "s3:GetObject",
+                "Resource": "arn:aws:s3:::${workspace}-portfolio-website/*",
+                "Condition": {
+                    "StringEquals": {
+                        "AWS:SourceArn": "arn:aws:cloudfront::${account_id}:distribution/E24WTSJXB8PPI1"
+                    }
+                }
+            }
+        ]
+      }
