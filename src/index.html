@@ -11,7 +11,6 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
     <link href="/static/styles.css" rel="stylesheet" />
-    <link href="/static/theme.css" rel="stylesheet" />
 </head>
 <body id="page-top">
     <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
@@ -26,11 +25,6 @@
                     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#contents">Contents</a></li>
                     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#stack">Tech</a></li>
                     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#footer">Contact</a></li>
-                    <li class="nav-item mx-0 mx-lg-1">
-                        <button id="theme-toggle" class="btn btn-link nav-link py-3 px-0 px-lg-3" aria-label="Toggle theme">
-                            <i class="fas fa-moon"></i>
-                        </button>
-                    </li>
                 </ul>
             </div>
         </div>
@@ -60,32 +54,38 @@
                 <div class="divider-custom-line"></div>
             </div>
             <h4 class="text-uppercase text-left text-secondary mt-5">Popular</h4>
-            <p class="text-muted">Auto-detected based on engagement metrics</p>
             <div class="row justify-content-center" id="popular-posts">
-                <!-- Popular content will be loaded dynamically -->
-            </div>
-            
-            <h4 class="text-uppercase text-left text-secondary mt-5">Recent Content</h4>
-            
-            <!-- Search and Filter Controls -->
-            <div class="content-controls mb-4">
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <input type="text" id="content-search" class="form-control" placeholder="Search articles and videos...">
+                <div class="col-md-6 col-lg-4 mb-5">
+                    <div class="card h-100 shadow border-0">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title"><u>VIDEO</u> - AWS SES Send HTML Template EMail.</h5>
+                            <p class="card-text">AWS SES Send HTML Template EMail.</p>
+                            <a href="https://www.youtube.com/watch?v=64Ut2HZbyWw" target="_blank" class="btn btn-primary mt-auto">View</a>
+                        </div>
                     </div>
-                    <div class="col-md-6 mb-3">
-                        <div class="btn-group w-100" role="group" aria-label="Content filter">
-                            <button type="button" class="btn btn-outline-primary filter-btn active" data-filter="all">All</button>
-                            <button type="button" class="btn btn-outline-primary filter-btn" data-filter="article">Articles</button>
-                            <button type="button" class="btn btn-outline-primary filter-btn" data-filter="video">Videos</button>
+                </div>
+                <div class="col-md-6 col-lg-4 mb-5">
+                    <div class="card h-100 shadow border-0">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title"><u>ARTICLE</u> - When multiple identical VPC CIDRs compete for an AWS Transit Gateway!</h5>
+                            <p class="card-text">When multiple identical VPC CIDRs compete for an AWS Transit Gateway!.</p>
+                            <a href="https://medium.com/p/10e086eddc70" target="_blank" class="btn btn-primary mt-auto">View</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 mb-5">
+                    <div class="card h-100 shadow border-0">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title"><u>ARTICLE</u> - Understanding self-assumption and scoped-down policy in AWS IAM</h5>
+                            <p class="card-text">Understanding self-assumption and scoped-down policy in AWS IAM.</p>
+                            <a href="https://dev.to/aws-builders/understanding-self-assumption-and-scoped-down-policy-in-aws-iam-2io" target="_blank" class="btn btn-primary mt-auto">View</a>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <div class="row justify-content-center" id="recent-posts">
-                <!-- Recent content will be loaded dynamically -->
-            </div>
+            <h4 class="text-uppercase text-left text-secondary mt-5">Recent</h4>
+            <div class="row justify-content-center" id="devto-posts">
+                </div>
         </div>
     </section>
 
@@ -140,32 +140,34 @@
     <script src="assets/mail/jqBootstrapValidation.js"></script>
     <script src="assets/mail/contact_me.js"></script>
     <script src="js/scripts.js"></script>
-    
-    <!-- Configuration -->
-    <script src="/static/config.js"></script>
-    
-    <!-- New modular scripts -->
-    <script src="/static/theme-manager.js"></script>
-    <script src="/static/content-manager.js"></script>
-    <script src="/static/ui-manager.js"></script>
-    <script src="/static/analytics.js"></script>
-    
-    <!-- Initialize application -->
     <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            // Initialize theme
-            const themeManager = new ThemeManager();
-            
-            // Initialize analytics
-            const analyticsManager = new AnalyticsManager();
-            
-            // Initialize content and UI
-            const contentManager = new ContentManager();
-            const uiManager = new UIManager(contentManager);
-            
-            // Load all content
-            await uiManager.init();
-        });
+        fetch("https://dev.to/api/articles?username=harik8&per_page=6")
+            .then(response => response.json())
+            .then(data => {
+                const postsContainer = document.getElementById("devto-posts");
+                if (data.length > 0) {
+                    data.forEach(post => {
+                        const postHTML = `
+                            <div class="col-md-6 col-lg-4 mb-5">
+                                <div class="card h-100 shadow border-0">
+                                    <div class="card-body d-flex flex-column">
+                                        <h5 class="card-title">${post.title}</h5>
+                                        <p class="card-text">${post.description}</p>
+                                        <a href="${post.url}" target="_blank" class="btn btn-primary mt-auto">View</a>
+                                    </div>
+                                </div>
+                            </div>`;
+                        postsContainer.innerHTML += postHTML;
+                    });
+                } else {
+                    postsContainer.innerHTML = '<div class="col-12"><p class="text-center">No recent posts found.</p></div>';
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching blog posts:", error);
+                const postsContainer = document.getElementById("devto-posts");
+                postsContainer.innerHTML = '<div class="col-12"><p class="text-center text-danger">Failed to load recent posts. Please try again later.</p></div>';
+            });
     </script>
 </body>
 </html>
