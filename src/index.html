@@ -143,7 +143,9 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            fetch("https://dev.to/api/articles?username=harik8&per_page=6")
+            const apiUrl = "https://dev.to/api/articles?username=harik8&per_page=6";
+            const corsProxyUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(apiUrl);
+            fetch(corsProxyUrl)
                 .then(response => response.json())
                 .then(data => {
                     const postsContainer = document.getElementById("devto-posts");
