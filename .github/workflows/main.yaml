@@ -32,6 +32,9 @@ jobs:
         role-session-name: github_action
         role-chaining: true
 
+    - name: Fetch latest dev.to articles
+      run: node fetch-articles.js
+
     - name: Publish
       run: |
         # Mask sensitive info from logs
